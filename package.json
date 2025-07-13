@@ -1,0 +1,26 @@
+{
+	"name": "clean-architecture-ts",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"type": "module",
+	"scripts": {
+		"start": "node dist/main.js",
+		"build": "npx tsc ./src/main.ts",
+		"dev": "npx tsx watch ./src/main.ts",
+		"test": "glob -c \"tsx --env-file .env --test --test-reporter spec \" \"./test/**/*.test.ts\"",
+		"test:watch": "glob -c \"tsx --env-file .env --test --test-reporter spec --watch \" \"./test/**/*.test.ts\"",
+		"test:coverage": "glob -c \"tsx --env-file .env --experimental-test-coverage --test \" \"./test/**/*.test.ts\""
+	},
+	"dependencies": {
+		"fastify": "^5.4.0",
+		"pg": "^8.16.3",
+		"zod": "^4.0.5"
+	},
+	"devDependencies": {
+		"@types/pg": "^8.15.4",
+		"glob": "^11.0.3",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.20.3",
+		"typescript": "^5.8.3"
+	}
+}
