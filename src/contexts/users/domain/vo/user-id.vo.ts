@@ -1,4 +1,4 @@
-import { isValidUuidV4 } from "../../../shared/infrastructure/utils/uuid-generator";
+import { isValidUuidV4 } from "../../../shared/domain/utils/uuid";
 
 export class UserId {
     readonly value: string;

@@ -14,7 +14,7 @@ export const userCreateSchema = z.object({
 }).strict() satisfies z.ZodType<UserCreateRequestDto>;
 
 export const userUpdateSchema = z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
     name: z.string().min(1),
     email: z.email(),
 }).strict() satisfies z.ZodType<UserUpdateRequestDto>;

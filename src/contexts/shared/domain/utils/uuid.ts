@@ -1,3 +1,7 @@
+export function isValidUuidV4(uuid: string): boolean {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
+}
+
 export function generateUuidV4(): string {
     // Usa crypto si está disponible (Node.js >= 14, navegadores modernos)
     if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -11,6 +15,3 @@ export function generateUuidV4(): string {
     });
 }
 
-export function isValidUuidV4(uuid: string): boolean {
-    return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
-}
