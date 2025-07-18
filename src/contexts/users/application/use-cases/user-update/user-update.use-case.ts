@@ -1,5 +1,4 @@
 import { UserRepository } from "../../../domain/repositories/user.repository";
-import { UserId } from "../../../domain/vo/user-id.vo";
 import { UserUpdateCommand } from "./user-update.command";
 import { UserNotFoundError } from "../../../domain/errors/user-not-found.error";
 import { UserName } from "../../../domain/vo/user-name.vo";
@@ -9,7 +8,7 @@ export class UserUpdate {
     constructor(private readonly userRepository: UserRepository) { }
 
     async execute(command: UserUpdateCommand): Promise<void> {
-        const user = await this.userRepository.findOneById(new UserId(command.id));
+        const user = await this.userRepository.findOneById(command.id);
 
         if (!user) {
             throw new UserNotFoundError("User not found");

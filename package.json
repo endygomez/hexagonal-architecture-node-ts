@@ -12,6 +12,7 @@
 		"test:coverage": "glob -c \"tsx --env-file .env --experimental-test-coverage --test \" \"./test/**/*.test.ts\""
 	},
 	"dependencies": {
+		"bcryptjs": "^3.0.2",
 		"fastify": "^5.4.0",
 		"pg": "^8.16.3",
 		"zod": "^4.0.5"

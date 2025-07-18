@@ -4,9 +4,9 @@ import { UserRepository } from "../../domain/repositories/user.repository";
 import { UserId } from "../../domain/vo/user-id.vo";
 import { UserName } from "../../domain/vo/user-name.vo";
 import { UserEmail } from "../../domain/vo/user-email.vo";
-import { UserCreatedAt } from "../../domain/vo/user-create-at.vo";
-import { UserUpdatedAt } from "../../domain/vo/user-update-at.vo";
-import { UserDeletedAt } from "../../domain/vo/user-delete-at.vo";
+import { UserCreatedAt } from "../../domain/vo/user-created-at.vo";
+import { UserUpdatedAt } from "../../domain/vo/user-updated-at.vo";
+import { UserDeletedAt } from "../../domain/vo/user-deleted-at.vo";
 
 type PostgresUser = {
     id: string;

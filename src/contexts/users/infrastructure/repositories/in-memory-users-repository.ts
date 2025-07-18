@@ -1,6 +1,5 @@
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { User } from "../../domain/entities/user.entity";
-import { UserId } from "../../domain/vo/user-id.vo";
 
 export class InMemoryUsersRepository implements UserRepository {
     private users: User[] = [];
@@ -9,8 +8,12 @@ export class InMemoryUsersRepository implements UserRepository {
         this.users.push(user);
     }
 
-    async findOneById(id: UserId): Promise<User | null> {
-        return this.users.find(user => user.id.value === id.value) || null;
+    async findOneById(id: string): Promise<User | null> {
+        return this.users.find(user => user.id.value === id) || null;
+    }
+
+    async findOneByEmail(email: string): Promise<User | null> {
+        return this.users.find(user => user.email.value === email) || null;
     }
 
     async update(user: User): Promise<void> {
@@ -20,8 +23,8 @@ export class InMemoryUsersRepository implements UserRepository {
         }
     }
 
-    async delete(id: UserId): Promise<void> {
-        this.users = this.users.filter(user => user.id.value !== id.value);
+    async delete(id: string): Promise<void> {
+        this.users = this.users.filter(user => user.id.value !== id);
     }
 
     async findAll(): Promise<User[]> {

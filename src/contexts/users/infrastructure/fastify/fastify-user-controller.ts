@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import z, { ZodError } from "zod";
 
 import { ServiceContainer } from "../../../shared/infrastructure/ServiceContainer";
-import { formatZodError } from "../../../shared/infrastructure/utils/zod-error.formatter";
+import { formatZodError } from "../../../shared/utils/zod-error.formatter";
 import { errorResponse, successResponse } from "../../../shared/infrastructure/ApiResponse";
 
 import { UserNotFoundError } from "../../domain/errors/user-not-found.error";
@@ -11,7 +11,6 @@ import { readModelToResponse, toCreateCommand, toUpdateCommand } from "../mapper
 import { UserFindOneByIdQuery } from "../../application/use-cases/user-find-one-by-id/user-find-one-by-id.query";
 import { UserDeleteCommand } from "../../application/use-cases/user-delete/user-delete.command";
 import { UserUpdateDto, UserUpdateDtoSchema } from "../dto/user-update.dto";
-import { UserUpdateCommand } from "../../application/use-cases/user-update/user-update.command";
 
 export class FastifyUserController {
     constructor() { }

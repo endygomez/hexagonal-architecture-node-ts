@@ -1,7 +1,5 @@
-import { isValidUuidV4 } from "../../../shared/domain/utils/uuid";
-
 export class UserId {
-    readonly value: string;
+    public readonly value: string;
 
     constructor(value: string) {
         this.value = value;
@@ -11,9 +9,6 @@ export class UserId {
     private ensureIsValid() {
         if (!this.value) {
             throw new Error('Id is required');
-        }
-        if (!isValidUuidV4(this.value)) {
-            throw new Error('Id must be a valid UUID v4');
         }
     }
 }
