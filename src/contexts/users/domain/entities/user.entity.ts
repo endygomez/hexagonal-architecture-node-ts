@@ -111,7 +111,7 @@ export class User {
         this.touchUpdatedAt();
     }
 
-    delete(): void {
+    markAsDeleted(): void {
         if (this.isDeleted) {
             throw new Error('User is already deleted');
         }

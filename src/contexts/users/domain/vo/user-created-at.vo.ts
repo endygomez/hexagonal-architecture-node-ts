@@ -1,18 +1,31 @@
 export class UserCreatedAt {
-    value: Date;
+    private readonly _value: Date;
 
     constructor(value: Date) {
-        this.value = value;
+        this._value = value;
         this.ensureIsValid();
     }
 
-    private ensureIsValid() {
-        if (!this.value) {
+    get value(): Date {
+        return this._value;
+    }
+
+    private ensureIsValid(): void {
+        if (!this._value) {
             throw new Error('CreatedAt is required');
         }
 
-        if (this.value > new Date()) {
+        if (this._value > new Date()) {
             throw new Error('CreatedAt cannot be in the future');
         }
     }
-}   
+
+    equals(other: UserCreatedAt): boolean {
+        if (!other) return false;
+        return this._value.getTime() === other.value.getTime();
+    }
+
+    toString(): string {
+        return this._value.toISOString();
+    }
+}

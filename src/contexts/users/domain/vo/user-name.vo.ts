@@ -1,26 +1,33 @@
 export class UserName {
-    public readonly value: string;
+    private readonly _value: string;
 
     constructor(value: string) {
-        this.value = value;
+        this._value = value;
         this.ensureIsValid();
     }
 
+    get value(): string {
+        return this._value;
+    }
+
     private ensureIsValid(): void {
-        if (!this.value) {
+        if (!this._value) {
             throw new Error('Name is required');
         }
-        if (this.value.length < 3) {
+        if (this._value.trim().length < 3) {
             throw new Error('Name must be at least 3 characters long');
+        }
+        if (this._value.length > 100) {
+            throw new Error('Name cannot be longer than 100 characters');
         }
     }
 
-    public equals(other: UserName): boolean {
+    equals(other: UserName): boolean {
         if (!other) return false;
-        return this.value === other.value;
+        return this._value === other.value;
     }
 
-    public toString(): string {
-        return this.value;
+    toString(): string {
+        return this._value;
     }
 }

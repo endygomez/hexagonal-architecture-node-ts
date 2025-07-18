@@ -7,7 +7,11 @@ export class UserFindAll {
 
     async execute(): Promise<UserReadModel[]> {
         const users = await this.userRepository.findAll();
+        
+        if (!users.length) {
+            return [];
+        }
 
-        return users.map(UserMapper.toReadModel);
+        return users.map(user => UserMapper.toReadModel(user));
     }
 }

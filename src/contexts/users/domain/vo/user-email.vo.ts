@@ -1,27 +1,31 @@
 export class UserEmail {
-    public readonly value: string;
+    private readonly _value: string;
 
     constructor(value: string) {
-        this.value = value;
+        this._value = value;
         this.ensureIsValid();
     }
 
+    get value(): string {
+        return this._value;
+    }
+
     private ensureIsValid(): void {
-        if (!this.value) {
+        if (!this._value) {
             throw new Error('Email is required');
         }
-        // Validación simple, puedes mejorar con regex si lo deseas
-        if (!this.value.includes('@')) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(this._value)) {
             throw new Error('Invalid email format');
         }
     }
 
-    public equals(other: UserEmail): boolean {
+    equals(other: UserEmail): boolean {
         if (!other) return false;
-        return this.value === other.value;
+        return this._value.toLowerCase() === other.value.toLowerCase();
     }
 
-    public toString(): string {
-        return this.value;
+    toString(): string {
+        return this._value;
     }
 }
