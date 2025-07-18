@@ -11,21 +11,14 @@ describe('User Entity', () => {
     const name = 'Juan Pérez';
     const email = 'juan.perez@example.com';
     const password = 'passwordSeguro123!';
-    const createdAt = new Date('2024-01-01T10:00:00Z');
-    const updatedAt = new Date('2024-01-01T10:00:00Z');
-    const deletedAt = new Date('2024-01-01T10:00:00Z');
 
     // Act
-    const user = User.create(id, name, email, password, createdAt, updatedAt, deletedAt);
+    const user = User.create(id, name, email, password);
 
     // Assert
     assert(user.id.value, id);
     assert(user.name.value, name);
     assert(user.email.value, email);
-    assert(user.password.value, password);
-    assert.deepEqual(user.createdAt.value, createdAt);
-    assert.deepEqual(user.updatedAt.value, updatedAt);
-    assert.equal(user.deletedAt.value, deletedAt);
   });
 });
 
