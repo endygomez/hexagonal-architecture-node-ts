@@ -1,6 +1,6 @@
 import { UserRepository } from "../../../domain/repositories/user.repository";
 import { UserUpdateCommand } from "./user-update.command";
-import { UserNotFoundError } from "../../../domain/errors/user-not-found.error";
+import { UserNotFoundException } from "../../../domain/exceptions/user-not-found.exception";
 import { UserName } from "../../../domain/vo/user-name.vo";
 import { UserEmail } from "../../../domain/vo/user-email.vo";
 import { UserId } from "../../../domain/vo/user-id.vo";
@@ -13,7 +13,7 @@ export class UserUpdate {
         const user = await this.userRepository.findOneById(userId.value);
 
         if (!user) {
-            throw new UserNotFoundError("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         if (command.name !== undefined) {

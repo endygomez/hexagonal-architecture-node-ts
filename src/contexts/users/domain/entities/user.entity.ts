@@ -84,10 +84,30 @@ export class User {
             new UserId(id),
             new UserName(name),
             new UserEmail(email),
-            new UserPassword(passwordHash),
+            UserPassword.fromHashedPassword(passwordHash),
             new UserCreatedAt(now),
             new UserUpdatedAt(now),
             new UserDeletedAt(null)
+        );
+    }
+
+    static fromPrimitives(data: {
+        id: string;
+        name: string;
+        email: string;
+        password: string;
+        created_at: Date;
+        updated_at: Date | null;
+        deleted_at: Date | null;
+    }): User {
+        return new User(
+            new UserId(data.id),
+            new UserName(data.name),
+            new UserEmail(data.email),
+            UserPassword.fromHashedPassword(data.password),
+            new UserCreatedAt(data.created_at),
+            new UserUpdatedAt(data.updated_at),
+            new UserDeletedAt(data.deleted_at)
         );
     }
 

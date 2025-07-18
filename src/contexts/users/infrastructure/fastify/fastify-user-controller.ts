@@ -3,24 +3,36 @@ import z, { ZodError } from "zod";
 
 import { ServiceContainer } from "../../../shared/infrastructure/ServiceContainer";
 import { formatZodError } from "../../../shared/utils/zod-error.formatter";
-import { errorResponse, successResponse } from "../../../shared/infrastructure/ApiResponse";
+import { errorResponse, paginatedResponse, successResponse } from "../../../shared/infrastructure/ApiResponse";
 
-import { UserNotFoundError } from "../../domain/errors/user-not-found.error";
+import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
 import { UserCreateDtoSchema } from "../dto/user-create.dto";
-import { readModelToResponse, toCreateCommand, toUpdateCommand } from "../mappers/user.mapper";
+import { UserMapper } from "../mappers/user.mapper";
 import { UserFindOneByIdQuery } from "../../application/use-cases/user-find-one-by-id/user-find-one-by-id.query";
 import { UserDeleteCommand } from "../../application/use-cases/user-delete/user-delete.command";
 import { UserUpdateDto, UserUpdateDtoSchema } from "../dto/user-update.dto";
+import { QueryParams, SortOrder } from "src/contexts/shared/utils/query-builder/query-builder.interface";
+import { QueryParamsSchema } from "src/contexts/shared/infrastructure/dto/query-params.schema";
+
 
 export class FastifyUserController {
     constructor() { }
 
-    async findAll(_: FastifyRequest, reply: FastifyReply) {
+    async findAll(request: FastifyRequest<{ Querystring: QueryParams }>, reply: FastifyReply) {
         try {
-            const users = await ServiceContainer.user.findAll.execute();
-            return reply.status(200).send(successResponse(users));
+            const params = QueryParamsSchema.parse(request.query);
+            const result = await ServiceContainer.user.findAll.execute(params);
+
+            return reply.status(200).send(paginatedResponse(result.items, result.meta));
 
         } catch (error) {
+            if (error instanceof ZodError) {
+                return reply.status(400).send({
+                    error: true,
+                    message: "Validation failed",
+                    details: formatZodError(error)
+                });
+            }
             if (error instanceof Error) {
                 reply.status(500).send(errorResponse(error.message));
             } else {
@@ -35,9 +47,9 @@ export class FastifyUserController {
             const query = new UserFindOneByIdQuery(id);
             const user = await ServiceContainer.user.findOneById.execute(query);
 
-            return reply.status(200).send(successResponse(readModelToResponse(user)));
+            return reply.status(200).send(successResponse(UserMapper.readModelToResponse(user)));
         } catch (error) {
-            if (error instanceof UserNotFoundError) {
+            if (error instanceof UserNotFoundException) {
                 return reply.status(404).send(errorResponse(error.message));
             }
             reply.status(500).send(errorResponse('Internal server error'));
@@ -47,10 +59,11 @@ export class FastifyUserController {
     async create(request: FastifyRequest, reply: FastifyReply) {
         try {
             const dto = UserCreateDtoSchema.parse(request.body);
-            const command = toCreateCommand(dto);
+            const command = UserMapper.toCreateCommand(dto);
             await ServiceContainer.user.create.execute(command);
             return reply.status(201).send(successResponse(null));
         } catch (error) {
+            console.error('Error in create user:', error);
             if (error instanceof ZodError) {
                 return reply.status(400).send({
                     error: true,
@@ -58,8 +71,16 @@ export class FastifyUserController {
                     details: formatZodError(error)
                 });
             }
-            console.log('Seguimos 2', error);
-            reply.status(500).send(errorResponse('Internal server error'));
+            if (error instanceof Error) {
+                console.error('Error details:', {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack
+                });
+                reply.status(500).send(errorResponse(error.message));
+            } else {
+                reply.status(500).send(errorResponse('Internal server error'));
+            }
         }
     }
 
@@ -68,14 +89,14 @@ export class FastifyUserController {
             const id = z.uuid().parse(request.params.id);
             const body = UserUpdateDtoSchema.parse(request.body);
 
-            const command = toUpdateCommand(id, body);
+            const command = UserMapper.toUpdateCommand(id, body);
 
             await ServiceContainer.user.update.execute(command);
 
             return reply.status(204).send(successResponse(null));
 
         } catch (error) {
-            if (error instanceof UserNotFoundError) {
+            if (error instanceof UserNotFoundException) {
                 return reply.status(404).send(errorResponse(error.message));
             }
             reply.status(500).send(errorResponse('Internal server error'));
@@ -90,7 +111,7 @@ export class FastifyUserController {
 
             return reply.status(204).send(successResponse(null));
         } catch (error) {
-            if (error instanceof UserNotFoundError) {
+            if (error instanceof UserNotFoundException) {
                 return reply.status(404).send(errorResponse(error.message));
             }
             if (error instanceof ZodError) {
@@ -100,7 +121,16 @@ export class FastifyUserController {
                     details: formatZodError(error)
                 });
             }
-            reply.status(500).send(errorResponse('Internal server error'));
+            if (error instanceof Error) {
+                // Handle specific error for already deleted users
+                if (error.message === "User is already deleted") {
+                    return reply.status(409).send(errorResponse("User is already deleted"));
+                }
+                console.error('Error in delete user:', error);
+                reply.status(500).send(errorResponse(error.message));
+            } else {
+                reply.status(500).send(errorResponse('Internal server error'));
+            }
         }
     }
 }

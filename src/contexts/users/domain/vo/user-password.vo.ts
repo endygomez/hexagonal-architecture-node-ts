@@ -28,6 +28,13 @@ export class UserPassword {
         }
     }
 
+    // Factory method for already hashed passwords (from database)
+    static fromHashedPassword(hashedPassword: string): UserPassword {
+        const instance = Object.create(UserPassword.prototype);
+        instance._value = hashedPassword;
+        return instance;
+    }
+
     equals(other: UserPassword): boolean {
         if (!other) return false;
         return this._value === other.value;

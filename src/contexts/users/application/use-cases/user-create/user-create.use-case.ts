@@ -19,14 +19,18 @@ export class UserCreate {
         const userId = new UserId(this.idGenerator.generate());
         const userName = new UserName(command.name);
         const userEmail = new UserEmail(command.email);
+        
+        // First validate the plain password
+        const userPassword = new UserPassword(command.password);
+        
+        // Then hash it
         const hashedPassword = await this.passwordHash.hash(command.password);
-        const userPassword = new UserPassword(hashedPassword);
         
         const user = User.create(
             userId.value,
             userName.value,
             userEmail.value,
-            userPassword.value
+            hashedPassword
         );
 
         await this.userRepository.create(user);

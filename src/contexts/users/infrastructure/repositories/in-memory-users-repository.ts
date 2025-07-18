@@ -1,5 +1,8 @@
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { User } from "../../domain/entities/user.entity";
+import { PaginatedResult, PaginationMeta, PaginationParams } from "../../../shared/domain/PaginationParams";
+import { QueryParams } from "src/contexts/shared/utils/query-builder/query-builder.interface";
+import { InMemoryFilterService } from "src/contexts/shared/infrastructure/persistence/in-memory-filter.service";
 
 export class InMemoryUsersRepository implements UserRepository {
     private users: User[] = [];
@@ -9,11 +12,11 @@ export class InMemoryUsersRepository implements UserRepository {
     }
 
     async findOneById(id: string): Promise<User | null> {
-        return this.users.find(user => user.id.value === id) || null;
+        return this.users.find(user => user.id.value === id && !user.isDeleted) || null;
     }
 
     async findOneByEmail(email: string): Promise<User | null> {
-        return this.users.find(user => user.email.value === email) || null;
+        return this.users.find(user => user.email.value === email && !user.isDeleted) || null;
     }
 
     async update(user: User): Promise<void> {
@@ -27,7 +30,29 @@ export class InMemoryUsersRepository implements UserRepository {
         this.users = this.users.filter(user => user.id.value !== id);
     }
 
-    async findAll(): Promise<User[]> {
-        return this.users;
+    async findAll(params: QueryParams): Promise<PaginatedResult<User>> {
+        // Filter out deleted users first
+        const nonDeletedUsers = this.users.filter(user => !user.isDeleted);
+        let filtered = InMemoryFilterService.applyFilters(nonDeletedUsers, params);
+
+        // Aplicar paginación
+        const { page = 1, limit = 10 } = params;
+        const { items, totalItems } = InMemoryFilterService.applyPagination(filtered, page, limit);
+
+        // Construir metadatos de paginación
+        const meta: PaginationMeta = {
+            currentPage: page,
+            itemsPerPage: limit,
+            totalItems,
+            totalPages: Math.ceil(totalItems / limit),
+            hasNextPage: page * limit < totalItems,
+            hasPreviousPage: page > 1
+        };
+
+        return { items, meta };
+    }
+
+    async findByIdIncludingDeleted(id: string): Promise<User | null> {
+        return this.users.find(user => user.id.value === id) || null;
     }
 }

@@ -29,4 +29,8 @@ export class UserUpdatedAt {
         }
         return this._value.getTime() === other._value.getTime();
     }
+
+    toString(): string {
+        return this._value ? this._value.toISOString() : 'not updated';
+    }
 }
