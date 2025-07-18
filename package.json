@@ -4,9 +4,14 @@
 	"main": "dist/index.js",
 	"type": "module",
 	"scripts": {
-		"start": "node dist/main.js",
-		"build": "npx tsc ./src/main.ts",
-		"dev": "npx tsx watch ./src/main.ts",
+		"start": "node --env-file .env dist/main.js",
+		"build": "npx tsc --env-file .env ./src/main.ts",
+		"dev": "npx tsx watch --env-file .env ./src/main.ts",
+		"dev:db": "docker-compose up -d postgres",
+		"dev:db:stop": "docker-compose down",
+		"dev:db:reset": "docker-compose down -v && docker-compose up -d postgres",
+		"dev:db:logs": "docker-compose logs -f postgres",
+		"dev:full": "docker-compose up -d postgres && npm run dev",
 		"test": "glob -c \"tsx --env-file .env --test --test-reporter spec \" \"./test/**/*.test.ts\"",
 		"test:watch": "glob -c \"tsx --env-file .env --test --test-reporter spec --watch \" \"./test/**/*.test.ts\"",
 		"test:coverage": "glob -c \"tsx --env-file .env --experimental-test-coverage --test \" \"./test/**/*.test.ts\""

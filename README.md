@@ -2,6 +2,54 @@
 
 Hexagonal Architecture, also known as Ports and Adapters, enables a clear separation of concerns within your codebase. The core principle is that the inner layers (Domain) are not affected by the outer layers (Infrastructure, Application). This approach enhances maintainability, scalability, and testability.
 
+## Quick Start
+
+### Prerequisites
+- Node.js (v18 or later)
+- Docker and Docker Compose
+- pnpm (recommended) or npm
+
+### Setup and Development
+
+1. **Clone and install dependencies:**
+   ```bash
+   pnpm install
+   ```
+
+2. **Set up environment variables:**
+   ```bash
+   cp .env.template .env
+   # Edit .env with your configuration if needed
+   ```
+
+3. **Start the database:**
+   ```bash
+   pnpm run dev:db
+   ```
+
+4. **Start the development server:**
+   ```bash
+   pnpm run dev
+   ```
+
+   Or start everything at once:
+   ```bash
+   pnpm run dev:full
+   ```
+
+### Available Scripts
+
+- `pnpm run dev` - Start the development server
+- `pnpm run dev:db` - Start only the PostgreSQL database
+- `pnpm run dev:db:stop` - Stop the database
+- `pnpm run dev:db:reset` - Stop and remove the database container and volume, then start a fresh database (all data will be lost)
+- `pnpm run dev:db:logs` - View database logs
+- `pnpm run dev:full` - Start database and development server
+- `pnpm run test` - Run tests
+- `pnpm run test:watch` - Run tests in watch mode
+- `pnpm run test:coverage` - Run tests with coverage report
+- `pnpm run build` - Build for production
+
 ## Layered Structure
 
 - **Domain**: Contains the business logic, entities, domain errors, value objects, and repository interfaces. The domain layer is self-contained and does not depend on any other layer.
@@ -67,4 +115,4 @@ HTTP request → Validate Schema | DTO → toCommand → Use Case Execution → 
 
 ---
 
-This structure ensures a robust, maintainable, and scalable codebase, following the principles of Hexagonal Architecture.
+This structure ensures a robust, maintainable, and scalable codebase, following the
