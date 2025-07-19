@@ -1,4 +1,4 @@
-import { PaginationParams } from "../../domain/PaginationParams";
+import { PaginationParams } from "../../domain/interfaces/pagination.interface";
 
 export interface SortOrder {
   field: string;

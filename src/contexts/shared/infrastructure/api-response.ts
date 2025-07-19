@@ -1,4 +1,4 @@
-import { PaginationMeta } from "../domain/PaginationParams";
+import { PaginationMeta } from "../domain/interfaces/pagination.interface";
 
 export interface ApiResponse<T> {
     error: boolean;

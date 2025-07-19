@@ -1,7 +1,8 @@
 import { Pool } from "pg";
 import { User } from "../../domain/entities/user.entity";
 import { UserRepository } from "../../domain/repositories/user.repository";
-import { PaginatedResult, PaginationMeta } from "../../../shared/domain/PaginationParams";
+import { PaginatedResult } from "../../../shared/domain/interfaces/pagination.interface";
+import { PaginationMeta } from "src/contexts/shared/domain/interfaces/pagination.interface";
 import { QueryParams } from "../../../shared/utils/query-builder/query-builder.interface";
 import { QueryBuilder } from "../../../shared/utils/query-builder/query-builder";
 

@@ -28,3 +28,5 @@ export const QueryParamsSchema = z.object({
     search: data.search,
     filters: data.filters
 }));
+
+export type QueryParamsDto = z.infer<typeof QueryParamsSchema>;

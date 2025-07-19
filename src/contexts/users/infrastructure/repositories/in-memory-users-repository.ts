@@ -1,6 +1,7 @@
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { User } from "../../domain/entities/user.entity";
-import { PaginatedResult, PaginationMeta, PaginationParams } from "../../../shared/domain/PaginationParams";
+import { PaginatedResult } from "../../../shared/domain/interfaces/pagination.interface";
+import { PaginationMeta, PaginationParams } from "src/contexts/shared/domain/interfaces/pagination.interface";
 import { QueryParams } from "src/contexts/shared/utils/query-builder/query-builder.interface";
 import { InMemoryFilterService } from "src/contexts/shared/infrastructure/persistence/in-memory-filter.service";
 

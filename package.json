@@ -12,9 +12,9 @@
 		"dev:db:reset": "docker-compose down -v && docker-compose up -d postgres",
 		"dev:db:logs": "docker-compose logs -f postgres",
 		"dev:full": "docker-compose up -d postgres && npm run dev",
-		"test": "glob -c \"tsx --env-file .env --test --test-reporter spec \" \"./test/**/*.test.ts\"",
-		"test:watch": "glob -c \"tsx --env-file .env --test --test-reporter spec --watch \" \"./test/**/*.test.ts\"",
-		"test:coverage": "glob -c \"tsx --env-file .env --experimental-test-coverage --test \" \"./test/**/*.test.ts\""
+		"test": "glob -c \"tsx --env-file .env --test --test-reporter spec \" \"./tests/**/*.test.ts\"",
+		"test:watch": "glob -c \"tsx --env-file .env --test --test-reporter spec --watch \" \"./tests/**/*.test.ts\"",
+		"test:coverage": "glob -c \"tsx --env-file .env --experimental-test-coverage --test \" \"./tests/**/*.test.ts\""
 	},
 	"dependencies": {
 		"bcryptjs": "^3.0.2",

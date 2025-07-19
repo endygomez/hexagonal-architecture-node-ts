@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import userRoutes from './contexts/users/infrastructure/fastify/fastify-user-router';
-import { initializeServices } from './contexts/shared/infrastructure/ServiceContainer';
+import { initializeServices } from './contexts/shared/infrastructure/service-container';
 
 const startServer = async () => {
     try {

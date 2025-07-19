@@ -1,5 +1,5 @@
 import { QueryParams } from "../../../shared/utils/query-builder/query-builder.interface";
-import { PaginatedResult } from "../../../shared/domain/PaginationParams";
+import { PaginatedResult } from "../../../shared/domain/interfaces/pagination.interface";
 import { User } from "../entities/user.entity";
 
 export interface UserRepository {

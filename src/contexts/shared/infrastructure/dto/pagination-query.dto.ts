@@ -7,3 +7,4 @@ export const PaginationQuerySchema = z.object({
   page: parseInt(data.page),
   limit: parseInt(data.limit)
 }));
+export type PaginationQueryDto = z.infer<typeof PaginationQuerySchema>;

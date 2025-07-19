@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import z, { ZodError } from "zod";
 
-import { ServiceContainer } from "../../../shared/infrastructure/ServiceContainer";
+import { ServiceContainer } from "../../../shared/infrastructure/service-container";
 import { formatZodError } from "../../../shared/utils/zod-error.formatter";
-import { errorResponse, paginatedResponse, successResponse } from "../../../shared/infrastructure/ApiResponse";
+import { errorResponse, paginatedResponse, successResponse } from "../../../shared/infrastructure/api-response";
 
 import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
 import { UserCreateDtoSchema } from "../dto/user-create.dto";
@@ -12,7 +12,7 @@ import { UserFindOneByIdQuery } from "../../application/use-cases/user-find-one-
 import { UserDeleteCommand } from "../../application/use-cases/user-delete/user-delete.command";
 import { UserUpdateDto, UserUpdateDtoSchema } from "../dto/user-update.dto";
 import { QueryParams, SortOrder } from "src/contexts/shared/utils/query-builder/query-builder.interface";
-import { QueryParamsSchema } from "src/contexts/shared/infrastructure/dto/query-params.schema";
+import { QueryParamsSchema } from "src/contexts/shared/infrastructure/dto/query-params.dto";
 
 
 export class FastifyUserController {

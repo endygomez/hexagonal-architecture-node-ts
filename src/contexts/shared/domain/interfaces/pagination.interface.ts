@@ -1,3 +1,8 @@
+
+export interface PaginatedResult<T> {
+  items: T[];
+  meta: PaginationMeta;
+}
 export interface PaginationParams {
   limit: number;
   page: number;
@@ -10,9 +15,4 @@ export interface PaginationMeta {
   itemsPerPage: number;
   totalItems: number;
   totalPages: number;
-}
-
-export interface PaginatedResult<T> {
-  items: T[];
-  meta: PaginationMeta;
 }
